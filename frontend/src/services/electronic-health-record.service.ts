@@ -11,3 +11,8 @@ export async function updateEhr(ehrDto: ElectronicHealthRecordDto ) {
   const { data } = await api.put('/electronic-health-record', ehrDto, { headers: authHeader() });
   return data;
 }
+
+export async function addEhr() {
+  const { data } = await api.post('/electronic-health-record/no-labeled', {}, { headers: authHeader() });
+  return data;
+}
