@@ -13,7 +13,11 @@ export class UsersService {
   ) {}
 
   async findOne(username: string): Promise<any | undefined> {
-    const { id, email, password } = await this.userModel.findOne({email: username}).exec();
-    return { id, email, password };
+    const user = await this.userModel.findOne({email: username}).exec();
+    if(user) {
+     const { id, email, password } = user;
+     return { id, email, password };
+    }
+    return null;
   }
 }
