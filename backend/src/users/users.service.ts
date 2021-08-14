@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { USER_MODEL } from './../database/providers/user.provider';
 import { User } from './interfaces/user.interface';
@@ -6,7 +6,7 @@ import { User } from './interfaces/user.interface';
 
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit{
   constructor(
     @Inject(USER_MODEL)
     private userModel: Model<User>,
@@ -15,9 +15,25 @@ export class UsersService {
   async findOne(username: string): Promise<any | undefined> {
     const user = await this.userModel.findOne({email: username}).exec();
     if(user) {
-     const { id, email, password } = user;
-     return { id, email, password };
+     const { id, email, password, name } = user;
+     return { id, email, password, name };
     }
     return null;
+  }
+
+  async onModuleInit() {
+    const users = await this.userModel.find().exec();
+    if(users.length){
+      console.log('There are users registered...')
+    }else{
+      console.log('Setting up users...')
+      await this.registerUsers();
+    }
+  }
+
+  async registerUsers() {
+    return this.userModel.insertMany([
+      { id: '1', email: 'drjohn@gmail.com', password: 'drjohn', name: 'Dr John'},
+      { id: '2', email: 'drbob@gmail.com', password: 'drbob', name: 'Dr Bob'}]);
   }
 }

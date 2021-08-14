@@ -19,8 +19,8 @@ export class AuthService {
     return null;
   }
 
-  async login({email, id}) {
-    const loggedUser: LoggedUser = { email, userId: id };
+  async login({email, id, name}) {
+    const loggedUser: LoggedUser = { email, name, userId: id };
     return {
       // eslint-disable-next-line @typescript-eslint/camelcase
       access_token: this.jwtService.sign(loggedUser),
