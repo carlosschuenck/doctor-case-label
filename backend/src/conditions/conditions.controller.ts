@@ -10,8 +10,6 @@ export class ConditionsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Req() req) {
-    const { user: LoggedUser } = req;
-    console.log("req", req.user)
     return await this.conditionsService.findAll();
   }
 

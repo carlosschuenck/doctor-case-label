@@ -1,5 +1,5 @@
 export interface ElectronicHealthRecord {
-  id: string;
+  _id: string;
   description: string;
 }
 

@@ -18,6 +18,7 @@ const YouAreDoneComponent = () => {
           <Box paddingTop={2} paddingLeft={4} paddingRight={4} display="flex" justifyContent="center">
             <Typography variant="h5" component="h5" gutterBottom > Do you want to add more cases to test? </Typography>
           </Box>
+
           <Box paddingTop={2} paddingLeft={4} paddingRight={4}  display="flex" justifyContent="center">
             <Button
               type="submit"
@@ -33,7 +34,7 @@ const YouAreDoneComponent = () => {
               <Typography variant="h6" component="h6" gutterBottom > Refresh the page to label, added: {count} </Typography>
             </Box>) : 0 
           }
-
+          
         </Grid>
       </Grid>
     </Container>
