@@ -32,7 +32,7 @@ const YouAreDoneComponent = () => {
           { count > 0 ? (
             <Box paddingTop={2} paddingLeft={4} paddingRight={4} display="flex" justifyContent="center">
               <Typography variant="h6" component="h6" gutterBottom > Refresh the page to label, added: {count} </Typography>
-            </Box>) : 0 
+            </Box>) : <></> 
           }
           
         </Grid>
