@@ -1,14 +1,24 @@
+import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { ConditionsService } from './conditions.service';
-import { Condition } from './interfaces/condition.interface';
-import { Controller, Get } from '@nestjs/common';
+
 
 @Controller('conditions')
 export class ConditionsController {
   constructor(private conditionsService: ConditionsService){}
   
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(): Condition[] {
-    return this.conditionsService.findAll();
+  async findAll(@Req() req) {
+    const { user: LoggedUser } = req;
+    console.log("req", req.user)
+    return await this.conditionsService.findAll();
   }
+
+  @Post()
+  add(){
+    this.conditionsService.create();
+  }
+
 
 }
