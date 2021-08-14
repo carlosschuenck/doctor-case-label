@@ -1,3 +1,4 @@
+import { ElectronicHealthRecordDto } from './dto/electronic-health-record.dto';
 import { Model } from 'mongoose';
 import { ELECTRONIC_HEALTH_RECORD_MODEL } from './../database/providers/electronic-health-record.provider';
 import { ElectronicHealthRecord } from './interfaces/electronic-health-record.interface';
@@ -22,5 +23,14 @@ export class ElectronicHealthRecordService {
         description: DEFAULT_DESCRIPTION,
       })
     return await creatEhr.save();
+  }
+
+  async update(ehr: ElectronicHealthRecordDto, userId: string){
+    console.log("dsdsdd", ehr,userId)
+    return this.ehrModel.findOneAndUpdate({_id: ehr.id}, {
+      doctorId: userId,
+      conditionId: ehr.conditionId,
+      labelTime: new Date()
+    })
   }
 }
