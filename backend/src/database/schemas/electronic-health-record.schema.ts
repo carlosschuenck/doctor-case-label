@@ -5,5 +5,5 @@ export const ElectronicHealthRecordSchema = new Schema({
   description: String,
   doctorId: String,
   conditionId: String,
-  labelTime: Date,
+  labelDurationSeconds: Number,
 });

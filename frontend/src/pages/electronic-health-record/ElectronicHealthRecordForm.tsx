@@ -16,7 +16,7 @@ function ElectronicHealthRecordForm(pros: Props){
   const [ehr, setEhr] = useState<ElectronicHealthRecord | undefined>();
   const [conditions, setConditions] = useState<Condition[] | undefined>();
   const [conditionCode, setConditionCode] = useState<string | undefined>();
-
+  const [initialDate, setInitialDate] = useState<any>(new Date());
   useEffect(() => {
     async function fetchData() {
       setConditions(await findAllConditions());
@@ -39,9 +39,18 @@ function ElectronicHealthRecordForm(pros: Props){
       toast.warn('Please, select a condition!')
       return;
     }
-    await updateEhr({id: ehr?._id, conditionId: conditionCode})
+    await updateEhr({id: ehr?._id, conditionId: conditionCode , duration: getDurationToLabelInSeconds()})
+    setInitialDate(new Date())
     setEhr(undefined);
     toast.success('Case labeled with success!')
+  }
+
+  const getDurationToLabelInSeconds = (): number => {
+    let now: any = new Date();
+    var diffMs = (now - initialDate); // milliseconds 
+    var diffSeconds = Math.floor((diffMs / 1000) % 60);
+    console.log("Seconds", diffSeconds)
+    return diffSeconds;
   }
 
 
