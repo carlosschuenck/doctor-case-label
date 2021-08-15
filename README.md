@@ -7,6 +7,21 @@ Versions:
  - Docker: 19.03.3 (Optional)
 
 
+## Users
+
+When you start the application you will be able to use these users:
+
+```
+email: drjohn@gmail.com
+password: drjohn
+Name: Dr John
+```
+```
+email: drbob@gmail.com
+password: drbob
+Name: Dr Bob
+```
+
 ## Backend
 
 ##### How to start
