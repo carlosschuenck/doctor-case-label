@@ -62,7 +62,7 @@ const PORT = '<new_backend_port>'
 
 ##### How to start
 
-```sh
+```
 cd frontend
 yarn install
 yarn start
@@ -73,15 +73,13 @@ yarn start
 If you need change the frontend port for some reason, open this file:
 
 ```
-frontend/package.json
+frontend/.env
 ```
 
-and edit this line: 
+and edit this variable: 
 
 ```
-"scripts": {
-  "start": "set PORT=<new_frontend_port> && react-scripts start"
-  ...
+PORT=<new_frontend_port>
 ```
 
 
@@ -91,7 +89,7 @@ The application is already configured to use a mongodb online (https://www.mongo
 
 To start the local database go to root path (the same path of file 'docker-compose.yml'), open a prompt and execute:
 
-```bash
+```
 docker-compose up -d
 ```
 
