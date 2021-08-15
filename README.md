@@ -24,7 +24,7 @@ Name: Dr Bob
 
 ## Backend
 
-##### How to start
+#### How to start
 
 ```sh
 cd backend
@@ -60,7 +60,7 @@ const PORT = '<new_backend_port>'
 
 ## Frontend
 
-##### How to start
+#### How to start
 
 ```
 cd frontend
