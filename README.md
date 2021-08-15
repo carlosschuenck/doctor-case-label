@@ -1,11 +1,10 @@
 # Doctor Case Label
 
 
-Verions:
+Versions:
  - NodeJS: v14.17.5
  - Yarn: 1.17.3
  - Docker: 19.03.3 (Optional)
-
 
 
 ## Backend
@@ -29,7 +28,19 @@ backend/src/main.ts
 and edit this line: 
 
 ```
-const PORT = 3001;
+const PORT = <new_backend_port>;
+```
+
+When you change the backend port, you must update the connection in frontend too, open this file:
+
+```
+frontend/src/services/api.ts
+```
+
+and edit this part: 
+
+```
+const PORT = '<new_backend_port>'
 ```
 
 ## Frontend
@@ -54,7 +65,7 @@ and edit this line:
 
 ```
 "scripts": {
-  "start": "set PORT=3006 && react-scripts start"
+  "start": "set PORT=<new_frontend_port> && react-scripts start"
   ...
 ```
 
@@ -106,8 +117,6 @@ and edit this line:
 ports:
       - <new_database_port>:27017
 ```
-
-#### Update the backend
 
 When you change the database port, you must update the connection in backend too, open this file:
 
