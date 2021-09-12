@@ -1,8 +1,10 @@
+import { Body, Controller, Get, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ElectronicHealthRecordDto } from './dto/electronic-health-record.dto';
 import { ElectronicHealthRecordService } from './electronic-health-record.service';
 
+@ApiTags('electronic-health-record')
 @Controller('electronic-health-record')
 export class ElectronicHealthRecordController {
 
