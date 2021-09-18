@@ -2,6 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CONDITION_MODEL } from '../database/providers/condition.provider';
 import { Condition } from './type/condition';
+import { ConditionDto } from './type/condition.dto';
 
 @Injectable()
 export class ConditionsService implements OnModuleInit{
@@ -11,8 +12,9 @@ export class ConditionsService implements OnModuleInit{
     private conditionModel: Model<Condition>,
   ) {}
 
-  async findAll(): Promise<Condition[]>{
-    return await this.conditionModel.find().exec();
+  async findAll(): Promise<ConditionDto[]>{
+    const conditions = await this.conditionModel.find().exec();
+    return conditions.map(({code, description}) => {return { id: code, label: `${description} [${code}]` }});
   }
 
 

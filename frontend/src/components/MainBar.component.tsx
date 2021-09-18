@@ -1,7 +1,8 @@
 import React from 'react';
-import { AppBar, Box, Button, Toolbar, Typography } from '@material-ui/core';
 import { getUserName, logout } from '../services/login.service';
 import { useHistory } from 'react-router-dom';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 const MainBarComponent = () => {
   const history = useHistory();
 

@@ -1,7 +1,7 @@
 import { Condition } from '../interfaces/condition.interface';
-import api, { authHeader } from './api';
+import api from './api';
 
 export async function findAllConditions() {
-  const { data } = await api.get<Condition[]>('/conditions',{ headers: authHeader() });
+  const { data } = await api.get<Condition[]>('/conditions');
   return data;
 }

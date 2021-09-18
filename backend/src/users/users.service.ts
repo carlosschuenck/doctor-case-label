@@ -15,8 +15,12 @@ export class UsersService implements OnModuleInit{
   async findOne(username: string): Promise<any | undefined> {
     const user = await this.userModel.findOne({email: username}).exec();
     if(user) {
-     const { id, email, password, name } = user;
-     return { id, email, password, name };
+     return { 
+              id: user.id, 
+              email: user.email, 
+              password: user.password, 
+              name: user.name 
+            };
     }
     return null;
   }

@@ -1,22 +1,25 @@
-import { Box, Button, Container, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
+import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import { Condition } from '../../interfaces/condition.interface';
 import { ElectronicHealthRecord } from '../../interfaces/electronic-health-record.interface';
 import { findAllConditions } from '../../services/condition.service';
-import { findNoLabeled, updateEhr } from '../../services/electronic-health-record.service';
+import { updateEhr } from '../../services/electronic-health-record.service';
 import ElectronicHealthRecordShow from './ElectronicHealthRecordShow';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css'; 
 
 interface Props {
-  setIsThereNext: Function
+  findNextEhr: Function,
+  enableLoading: Function,
+  ehr: ElectronicHealthRecord | undefined
 }
+
 function ElectronicHealthRecordForm(pros: Props){
   
-  const [ehr, setEhr] = useState<ElectronicHealthRecord | undefined>();
-  const [conditions, setConditions] = useState<Condition[] | undefined>();
-  const [conditionCode, setConditionCode] = useState<string | undefined>();
+  const [conditions, setConditions] = useState<Condition[]>([]);
+  const [condition, setCondition] = useState<Condition | null>(null);
   const [initialDate, setInitialDate] = useState<any>(new Date());
+  
   useEffect(() => {
     async function fetchData() {
       setConditions(await findAllConditions());
@@ -24,57 +27,45 @@ function ElectronicHealthRecordForm(pros: Props){
     fetchData()
   }, [])
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await findNoLabeled();
-      if(response && !ehr) setEhr(response);
-      pros.setIsThereNext(response ? true : false);
-    }
-    fetchData()
-  }, [ehr])
-
   const submitCase = async (event: any) => {
     event.preventDefault();
-    if(!conditionCode){
+    if(!condition){
       toast.warn('Please, select a condition!')
       return;
     }
-    await updateEhr({id: ehr?._id, conditionId: conditionCode , duration: getDurationToLabelInSeconds()})
-    setInitialDate(new Date())
-    setEhr(undefined);
+    pros.enableLoading()
+    await updateEhr({id: pros.ehr?._id, conditionId: condition.id , duration: getDurationToLabelInSeconds()})
+    setInitialDate(new Date());
     toast.success('Case labeled with success!')
+    await pros.findNextEhr();
   }
 
   const getDurationToLabelInSeconds = (): number => {
     let now: any = new Date();
-    var diffMs = (now - initialDate); // milliseconds 
-    var diffSeconds = Math.floor((diffMs / 1000) % 60);
-    console.log("Seconds", diffSeconds)
-    return diffSeconds;
+    var diffMilliseconds = (now - initialDate);
+    return  Math.floor((diffMilliseconds / 1000) % 60);
   }
 
-
   return(
-  <Container maxWidth="xl">
     <Grid container spacing={3}>
-      <ElectronicHealthRecordShow description={ehr?.description}></ElectronicHealthRecordShow>
+      <ElectronicHealthRecordShow description={pros.ehr?.description}></ElectronicHealthRecordShow>
       <Grid item xs={6}>
         <form noValidate onSubmit={submitCase}>
           <Box paddingTop={8}  paddingLeft={4} paddingRight={4} >
             <Typography variant="h6" component="h6">
             Select condition:
             </Typography>
-            <Select
-              labelId="demo-simple-select-placeholder-label-label"
-              id="demo-simple-select-placeholder-label"
+            <Autocomplete
+              disablePortal
               fullWidth
-              value={conditionCode}
-              onChange={(event: any) => { setConditionCode(event.target.value) }}
-              displayEmpty>
-              {conditions?.map(({ code, description}) => (
-                  <MenuItem key={code} value={code}>{description} ({code})</MenuItem>
-              ))}
-            </Select>
+              id="demo-simple-select-placeholder-label"
+              value={condition}
+              onChange={(event: any, newValue: Condition | null) => {
+                setCondition(newValue)
+              }}
+              options={conditions}
+              renderInput={(params) => <TextField {...params} />}
+            />
           </Box>
           <Box paddingTop={8} paddingLeft={4} paddingRight={4}  display="flex" justifyContent="flex-end">
             <Button
@@ -86,9 +77,7 @@ function ElectronicHealthRecordForm(pros: Props){
           </Box>
         </form>
       </Grid>
-    </Grid>
-    <ToastContainer />
-  </Container>)
+    </Grid>)
 }
 
 export default ElectronicHealthRecordForm;
